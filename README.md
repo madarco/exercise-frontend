@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Simple SWAPI app using Shadcn, Next.js 15+
 
 ## Getting Started
 
@@ -6,31 +6,44 @@ First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Code Structure:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The main pages are in dashboard, with 3 components that are reused on every page:
 
-## Learn More
+- detail-page: takes a list of columns as input and format the fields of a resource
+- list-page: takes a list of columns as input and format a paginated table
+- resource-link: component to display a link to a resource, while fetching the Name from the API
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/
+│   ├── api/
+│   │   └── swapi/
+│   │       └── [...path]/
+│   │           └── route.ts - Proxy to cache SWAPI on server with rate limiting
+│   ├── dashboard/
+│   │   ├── components/
+│   │   │   └── list-page.tsx - takes a list of columns as input and format the fields of a resource
+│   │   │   └── detail-page.tsx - takes a list of columns as input and format a paginated table
+│   │   │   └── resource-link.tsx -  component to display a link to a resource, while fetching the Name from the API
+│   │   ├── films/
+│   │   │   └── [id] page.tsx - the detail page
+│   │   │   └── page.tsx - the paginated list page
+│   │   ├── swapi-client.tsx - an utility function to fetch from SWAPI, optionally with localStorage caching
+│   │   └── use-swapi.tsx - an composable to manage loading of resources that needs to fetch the /resource/:id to show extra fields
+│   └── layout.tsx - base dashboard layout (from shadcn)
+├── components/ - components from Shadcn
+│   ├── ...
+│   └── ui/
+│       ├── ...
+├── configs/
+│   ├── cache.tsx - Config utility for caching
+│   └── menus.tsx - Static settings for the nav menu
+├── env.example - Optional configs, like rate limiting and enable/disable server and localStorage cache
+└── package.json
+```
