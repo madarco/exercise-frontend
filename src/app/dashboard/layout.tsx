@@ -23,7 +23,7 @@ export default function Layout({ children }) {
       <SidebarInset>
         <SiteHeader name={navItem?.title || "Detail"} />
         <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2 px-8">
+          <div className="@container/main flex flex-1 flex-col gap-2 px-1 md:px-8">
             <Suspense>{children}</Suspense>
           </div>
         </div>

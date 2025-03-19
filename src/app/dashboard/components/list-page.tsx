@@ -98,7 +98,8 @@ export default function ListPage({ resource, columnsDef }: { resource: ResourceT
       {/* Pagination controls */}
       <div className="flex items-center justify-between py-4">
         <div className="text-sm text-muted-foreground">
-          Showing <strong>{(currentPage - 1) * 10 + (data?.results?.length || 0)}</strong> of <strong>{totalRecords}</strong> records
+          <span className="hidden md:inline">Showing</span> <strong>{(currentPage - 1) * 10 + (data?.results?.length || 0)}</strong> of{" "}
+          <strong>{totalRecords}</strong> records
         </div>
         <div className="flex items-center space-x-2">
           <Button variant="outline" size="sm" onClick={goToPreviousPage} disabled={currentPage <= 1}>
