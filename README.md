@@ -1,5 +1,11 @@
 Simple SWAPI app using Shadcn, Next.js 15+
 
+The app is a frontend SPA with no SSR needed (other than layouts).
+
+The requests are cached in both localStorage and using the new Next.js caching.
+
+Cache (both server and localStorage) can be cleared from the home with the Clear Cache button.
+
 ## Getting Started
 
 First, run the development server:
