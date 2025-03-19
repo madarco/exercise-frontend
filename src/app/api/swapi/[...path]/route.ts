@@ -10,6 +10,13 @@ const RATE_LIMIT_WINDOW_MS = parseInt(process.env.RATE_LIMIT_WINDOW_MS || "1000"
 // Sliding window to track recent requests
 const requestTimestamps: number[] = [];
 
+class NotFoundError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'NotFoundError';
+  }
+}
+
 // Helper function to enforce rate limits
 async function enforceRateLimit(): Promise<void> {
   const now = Date.now();
@@ -58,6 +65,9 @@ export async function GET(
         // Apply rate limiting
         await enforceRateLimit();
         const response = await fetch(url)
+        if (response.status === 404) {
+          throw new NotFoundError('Not found')
+        }
         if (!response.ok) {
           console.error('Failed to fetch data from SWAPI', response.status, response.statusText)
           throw new Error('Failed to fetch data from SWAPI')
@@ -73,7 +83,14 @@ export async function GET(
 
     const data = await getCachedData()
     return NextResponse.json(data);
-  } catch (error) {
+  } 
+  catch (error) {
+    if (error instanceof NotFoundError) {
+      return NextResponse.json(
+        { error: 'Not found' },
+        { status: 404 }
+      );
+    }
     console.error('Error proxying request to SWAPI:', error);
     return NextResponse.json(
       { error: 'Failed to fetch data from SWAPI' },

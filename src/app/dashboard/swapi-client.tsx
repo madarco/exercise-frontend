@@ -1,8 +1,16 @@
 "use client";
 
 import { baseUrl, localCache } from "@/configs/cache";
+import { notFound } from "next/navigation";
 
 export type ResourceType = "films" | "people" | "planets" | "species" | "starships" | "vehicles";
+
+export class NotFoundError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "NotFoundError";
+  }
+}
 
 export interface PaginatedData {
   total_records: number;
@@ -60,6 +68,9 @@ export const fetchData = async (resourceOrUrl: string, page?: number, isFullUrl 
     // Use for testing:
     //await new Promise((resolve) => setTimeout(resolve, 5000));
     const response = await fetch(apiUrl, { cache: "force-cache", next: { revalidate: 3600 } });
+    if (response.status === 404) {
+      throw new NotFoundError(`Not found: ${isFullUrl ? "details" : resourceOrUrl}`);
+    }
     if (!response.ok) {
       throw new Error(`Failed to fetch ${isFullUrl ? "details" : resourceOrUrl}`);
     }
@@ -73,6 +84,9 @@ export const fetchData = async (resourceOrUrl: string, page?: number, isFullUrl 
 
     return data;
   } catch (err) {
+    if (err instanceof NotFoundError) {
+      throw new Error("Not found");
+    }
     const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
     console.error(errorMessage);
     throw err;

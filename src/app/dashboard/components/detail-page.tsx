@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { IconArrowLeft } from "@tabler/icons-react";
-import { useParams, useRouter } from "next/navigation";
+import { notFound, useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ResourceType } from "../swapi-client";
 import { ColumnDef, useSwapiDetail } from "../use-swapi";
@@ -23,13 +23,16 @@ export default function DetailPage({ resource, properties }: { resource: Resourc
 
   // Loading state
   // Loading state
-  if (loading && !item) {
+  if (loading || !item) {
     return <LoadingState properties={properties} />;
   }
 
   // Error state
-  if (error || !item) {
-    return <ErrorState error={error || "Item not found"} />;
+  if (error) {
+    if (error === "Not found") {
+      return notFound();
+    }
+    return <ErrorState error={error || "An error occurred"} />;
   }
 
   return (

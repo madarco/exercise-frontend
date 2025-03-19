@@ -1,5 +1,6 @@
 import { ReactNode, useCallback, useEffect, useState } from "react";
-import { fetchData as swapiFetchData, PaginatedData, ResourceType, SinglePageData } from "./swapi-client";
+import { fetchData as swapiFetchData, PaginatedData, ResourceType, SinglePageData, NotFoundError } from "./swapi-client";
+import { notFound } from "next/navigation";
 
 export const useSwapiResults = () => {
   const [data, setData] = useState<PaginatedData | null>(null);
