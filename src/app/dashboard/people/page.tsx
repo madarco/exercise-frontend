@@ -8,7 +8,7 @@ const columnsDef: ColumnDef[] = [
   { property: "name", title: "Name" },
   { property: "gender", title: "Gender" },
   { property: "birth_year", title: "Birth Year" },
-  { property: "homeworld", title: "Homeworld" },
+  { property: "homeworld", title: "Homeworld", resource: "planets" },
 ];
 
 const resource: ResourceType = "people";
