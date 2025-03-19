@@ -14,6 +14,12 @@ import {
   IconSearch,
   IconSettings,
   IconUsers,
+  IconMovie,
+  IconAlien,
+  IconPlanet,
+  IconRocket,
+  IconCar,
+  IconWorld,
 } from "@tabler/icons-react";
 
 export const sidebar = {
@@ -26,33 +32,33 @@ export const sidebar = {
     {
       title: "Films",
       url: "/dashboard/films",
-      icon: IconDashboard,
+      icon: IconMovie,
     },
     {
       title: "People",
       url: "/dashboard/people",
-      icon: IconListDetails,
+      icon: IconUsers,
     },
     {
       title: "Planets",
       url: "/dashboard/planets",
-      icon: IconChartBar,
+      icon: IconPlanet,
     },
     {
       title: "Species",
       url: "/dashboard/species",
-      icon: IconFolder,
+      icon: IconAlien,
     },
     {
       title: "Starships",
       url: "/dashboard/starships",
-      icon: IconUsers,
+      icon: IconRocket,
     },
 
     {
       title: "Vehicles",
       url: "/dashboard/vehicles",
-      icon: IconUsers,
+      icon: IconCar,
     },
   ],
 };

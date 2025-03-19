@@ -1,13 +1,21 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { fetchResource, SinglePageData } from "../swapi-client";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SinglePageData } from "../swapi-client";
+import { useSwapiDetail, useSwapiResults } from "../use-swapi";
+import { fetchData } from "../swapi-client";
+import Link from "next/link";
 
 // Create a component for the films page
 export default function Page() {
-  const [films, setFilms] = useState<SinglePageData | null>(null);
+  const [films, setFilms] = useState<{
+    result: {
+      properties: Record<string, any>;
+      uid: string;
+    }[];
+  } | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,7 +24,7 @@ export default function Page() {
     const loadFilms = async () => {
       setLoading(true);
       try {
-        const data = await fetchResource("films");
+        const data = await fetchData("films");
         setFilms(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An unknown error occurred");
@@ -73,27 +81,31 @@ export default function Page() {
 
   return (
     <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-      <h1 className="text-2xl font-bold">Star Wars Films</h1>
-
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {films?.result?.map((film) => (
-          <Card key={film.properties.episode_id}>
-            <CardHeader>
-              <CardTitle>{film.properties.title}</CardTitle>
-              <CardDescription>Episode {film.properties.episode_id}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm line-clamp-3">{film.properties.opening_crawl}</p>
-            </CardContent>
-            <CardFooter className="flex-col items-start gap-1">
-              <div className="text-sm">
-                <span className="font-medium">Director:</span> {film.properties.director}
-              </div>
-              <div className="text-sm">
-                <span className="font-medium">Release Date:</span> {film.properties.release_date}
-              </div>
-            </CardFooter>
-          </Card>
+          <Link
+            key={film.properties.episode_id}
+            className="w-full text-left cursor-pointer transition-transform duration-200 hover:scale-[1.02] hover:shadow-lg"
+            href={`/dashboard/films/${film.uid}`}
+          >
+            <Card className="h-full transition-colors hover:bg-muted/50">
+              <CardHeader>
+                <CardTitle>{film.properties.title}</CardTitle>
+                <CardDescription>Episode {film.properties.episode_id}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm line-clamp-3">{film.properties.opening_crawl}</p>
+              </CardContent>
+              <CardFooter className="flex-col items-start gap-1">
+                <div className="text-sm">
+                  <span className="font-medium">Director:</span> {film.properties.director}
+                </div>
+                <div className="text-sm">
+                  <span className="font-medium">Release Date:</span> {film.properties.release_date}
+                </div>
+              </CardFooter>
+            </Card>
+          </Link>
         ))}
       </div>
 
@@ -105,26 +117,20 @@ export default function Page() {
           <CardContent className="text-center">
             <p className="text-gray-500">No films found in the database</p>
           </CardContent>
-          <CardFooter className="flex justify-center">
-            <button
-              onClick={async () => {
-                setLoading(true);
-                try {
-                  const data = await fetchResource("films");
-                  setFilms(data);
-                } catch (err) {
-                  setError(err instanceof Error ? err.message : "An unknown error occurred");
-                } finally {
-                  setLoading(false);
-                }
-              }}
-              className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 transition"
-            >
-              Refresh Films
-            </button>
-          </CardFooter>
         </Card>
       )}
+
+      <CardFooter className="flex justify-center">
+        <button
+          onClick={async () => {
+            localStorage.clear();
+            window.location.reload();
+          }}
+          className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 transition"
+        >
+          Clear Cache
+        </button>
+      </CardFooter>
     </div>
   );
 }

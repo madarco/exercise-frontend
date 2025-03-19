@@ -1,9 +1,6 @@
 "use client";
-import React, { createContext, useContext, useState, useCallback, ReactNode } from "react";
 
-// Helper functions for fetching Star Wars data
-// Define resource type union
-type ResourceType = "films" | "people" | "planets" | "species" | "starships" | "vehicles";
+export type ResourceType = "films" | "people" | "planets" | "species" | "starships" | "vehicles";
 
 export interface PaginatedData {
   total_records: number;
@@ -15,22 +12,36 @@ export interface PaginatedData {
 }
 
 export interface SinglePageData {
-  result: any[];
+  result: {
+    properties: Record<string, any>;
+    url: string;
+  };
 }
 
 const baseUrl = "https://swapi.tech/api";
 
-// Generic fetch function with localStorage caching
+/**
+ * Useful function to get values from SWAPI with caching on localStorage
+ */
 export const fetchData = async (resourceOrUrl: string, page?: number, isFullUrl = false) => {
-  // Build the resource URL with pagination if needed
   let resourceUrl = resourceOrUrl;
   if (!isFullUrl && page && page > 1) {
     resourceUrl = `${resourceOrUrl}?page=${page}&limit=10`;
   }
 
+  // Determine the appropriate URL to fetch
+  let apiUrl;
+  if (isFullUrl) {
+    // Use the URL directly if it's a full URL
+    apiUrl = resourceOrUrl.trim().replace("www.", "");
+  } else {
+    // Otherwise, construct the API URL from the resource name
+    apiUrl = page && page > 1 ? `${baseUrl}/${resourceOrUrl}/?page=${page}&limit=10` : `${baseUrl}/${resourceOrUrl}`;
+  }
+
   // Check if we have cached data in localStorage
-  const cachedData = typeof window !== "undefined" ? localStorage.getItem(`swapi_${resourceUrl}`) : null;
-  const cachedTimestamp = typeof window !== "undefined" ? localStorage.getItem(`swapi_${resourceUrl}_timestamp`) : null;
+  const cachedData = typeof window !== "undefined" ? localStorage.getItem(`swapi_${apiUrl}`) : null;
+  const cachedTimestamp = typeof window !== "undefined" ? localStorage.getItem(`swapi_${apiUrl}_timestamp`) : null;
 
   // Check if cache is valid (less than 24 hours old)
   const isValidCache = cachedData && cachedTimestamp && Date.now() - parseInt(cachedTimestamp) < 24 * 60 * 60 * 1000;
@@ -46,17 +57,8 @@ export const fetchData = async (resourceOrUrl: string, page?: number, isFullUrl 
   }
 
   try {
-    // Determine the appropriate URL to fetch
-    let apiUrl;
-    if (isFullUrl) {
-      // Use the URL directly if it's a full URL
-      apiUrl = resourceOrUrl;
-    } else {
-      // Otherwise, construct the API URL from the resource name
-      apiUrl = page && page > 1 ? `${baseUrl}/${resourceOrUrl}/?page=${page}&limit=10` : `${baseUrl}/${resourceOrUrl}/`;
-    }
-
-    await new Promise((resolve) => setTimeout(resolve, 10000));
+    // Use for testing:
+    //await new Promise((resolve) => setTimeout(resolve, 5000));
     const response = await fetch(apiUrl);
     if (!response.ok) {
       throw new Error(`Failed to fetch ${isFullUrl ? "details" : resourceOrUrl}`);
@@ -65,8 +67,8 @@ export const fetchData = async (resourceOrUrl: string, page?: number, isFullUrl 
 
     // Cache the results in localStorage with timestamp
     if (typeof window !== "undefined") {
-      localStorage.setItem(`swapi_${resourceUrl}`, JSON.stringify(data));
-      localStorage.setItem(`swapi_${resourceUrl}_timestamp`, Date.now().toString());
+      localStorage.setItem(`swapi_${apiUrl}`, JSON.stringify(data));
+      localStorage.setItem(`swapi_${apiUrl}_timestamp`, Date.now().toString());
     }
 
     return data;
@@ -75,22 +77,4 @@ export const fetchData = async (resourceOrUrl: string, page?: number, isFullUrl 
     console.error(errorMessage);
     throw err;
   }
-};
-
-// Unified fetch resource method that handles all resource types
-export const fetchResource = async (resource: ResourceType, page?: number) => {
-  return fetchData(resource, page);
-};
-
-// Function to fetch individual person details
-export const fetchDetails = async (url: string) => {
-  return fetchData(url, undefined, true);
-};
-
-// Export named functions to be imported directly
-export const useStarWars = () => {
-  return {
-    fetchResource,
-    fetchDetails,
-  };
 };

@@ -6,13 +6,14 @@ import { ColumnDef } from "../use-swapi";
 
 const columnsDef: ColumnDef[] = [
   { property: "name", title: "Name" },
-  { property: "gender", title: "Gender" },
-  { property: "birth_year", title: "Birth Year" },
-  { property: "homeworld", title: "Homeworld" },
+  { property: "model", title: "Model" },
+  { property: "manufacturer", title: "Manufacturer" },
+  { property: "starship_class", title: "Class" },
+  { property: "hyperdrive_rating", title: "Hyperdrive Rating" },
 ];
 
-const resource: ResourceType = "people";
+const resource: ResourceType = "starships";
 
-export default function PeoplePage() {
+export default function StarshipsPage() {
   return <ListPage resource={resource} columnsDef={columnsDef} />;
 }

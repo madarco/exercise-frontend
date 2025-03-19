@@ -6,13 +6,13 @@ import { ColumnDef } from "../use-swapi";
 
 const columnsDef: ColumnDef[] = [
   { property: "name", title: "Name" },
-  { property: "gender", title: "Gender" },
-  { property: "birth_year", title: "Birth Year" },
-  { property: "homeworld", title: "Homeworld" },
+  { property: "climate", title: "Climate" },
+  { property: "terrain", title: "Terrain" },
+  { property: "population", title: "Population" },
 ];
 
-const resource: ResourceType = "people";
+const resource: ResourceType = "planets";
 
-export default function PeoplePage() {
+export default function PlanetsPage() {
   return <ListPage resource={resource} columnsDef={columnsDef} />;
 }
