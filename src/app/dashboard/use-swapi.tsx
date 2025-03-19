@@ -25,7 +25,8 @@ export const useSwapiResults = () => {
               }));
             })
             .catch((err) => {
-              setError(err.message);
+              // NB: we just skip:
+              console.error("Error fetching item data:", err);
             });
         }
       })

@@ -125,6 +125,7 @@ export default function Page() {
           onClick={async () => {
             localStorage.clear();
             window.location.reload();
+            await fetch("/api/swapi/films", { method: "DELETE" });
           }}
           className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 transition"
         >

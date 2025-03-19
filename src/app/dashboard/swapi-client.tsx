@@ -1,5 +1,7 @@
 "use client";
 
+import { baseUrl, localCache } from "@/configs/cache";
+
 export type ResourceType = "films" | "people" | "planets" | "species" | "starships" | "vehicles";
 
 export interface PaginatedData {
@@ -18,8 +20,6 @@ export interface SinglePageData {
   };
 }
 
-const baseUrl = "https://swapi.tech/api";
-
 /**
  * Useful function to get values from SWAPI with caching on localStorage
  */
@@ -30,18 +30,18 @@ export const fetchData = async (resourceOrUrl: string, page?: number, isFullUrl 
   }
 
   // Determine the appropriate URL to fetch
-  let apiUrl;
   if (isFullUrl) {
-    // Use the URL directly if it's a full URL
-    apiUrl = resourceOrUrl.trim().replace("www.", "");
-  } else {
-    // Otherwise, construct the API URL from the resource name
-    apiUrl = page && page > 1 ? `${baseUrl}/${resourceOrUrl}/?page=${page}&limit=10` : `${baseUrl}/${resourceOrUrl}`;
+    const tmpUrl = new URL(resourceOrUrl);
+    resourceOrUrl = tmpUrl.pathname + tmpUrl.search;
+    // replace /api:
+    resourceOrUrl = resourceOrUrl.replace(/^\/api\//, "");
   }
 
+  // Otherwise, construct the API URL from the resource name
+  const apiUrl = page && page > 1 ? `${baseUrl}/${resourceOrUrl}/?page=${page}&limit=10` : `${baseUrl}/${resourceOrUrl}`;
   // Check if we have cached data in localStorage
-  const cachedData = typeof window !== "undefined" ? localStorage.getItem(`swapi_${apiUrl}`) : null;
-  const cachedTimestamp = typeof window !== "undefined" ? localStorage.getItem(`swapi_${apiUrl}_timestamp`) : null;
+  const cachedData = localCache ? (typeof window !== "undefined" ? localStorage.getItem(`swapi_${apiUrl}`) : null) : null;
+  const cachedTimestamp = localCache ? (typeof window !== "undefined" ? localStorage.getItem(`swapi_${apiUrl}_timestamp`) : null) : null;
 
   // Check if cache is valid (less than 24 hours old)
   const isValidCache = cachedData && cachedTimestamp && Date.now() - parseInt(cachedTimestamp) < 24 * 60 * 60 * 1000;
@@ -59,14 +59,14 @@ export const fetchData = async (resourceOrUrl: string, page?: number, isFullUrl 
   try {
     // Use for testing:
     //await new Promise((resolve) => setTimeout(resolve, 5000));
-    const response = await fetch(apiUrl);
+    const response = await fetch(apiUrl, { cache: "force-cache", next: { revalidate: 3600 } });
     if (!response.ok) {
       throw new Error(`Failed to fetch ${isFullUrl ? "details" : resourceOrUrl}`);
     }
     const data = await response.json();
 
     // Cache the results in localStorage with timestamp
-    if (typeof window !== "undefined") {
+    if (localCache && typeof window !== "undefined") {
       localStorage.setItem(`swapi_${apiUrl}`, JSON.stringify(data));
       localStorage.setItem(`swapi_${apiUrl}_timestamp`, Date.now().toString());
     }
