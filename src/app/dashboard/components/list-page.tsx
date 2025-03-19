@@ -14,6 +14,7 @@ import { useSwapiResults } from "../use-swapi";
 import { ColumnDef } from "../use-swapi";
 import ResourceLink from "./resource-link";
 import { parseAsInteger, useQueryState } from "nuqs";
+import { formatPopulation } from "@/lib/utils";
 
 export default function ListPage({ resource, columnsDef }: { resource: ResourceType; columnsDef: ColumnDef[] }) {
   const { data, fetchData, loading, error } = useSwapiResults();
@@ -124,6 +125,12 @@ const TableCellValue = ({ column, item }: { column: ColumnDef; item: any }) => {
     case "badge":
       return <Badge variant="outline">{value || "Unknown"}</Badge>;
     case "measurement":
+      if ((column.unit = "people")) {
+        return <span>{formatPopulation(value)}</span>;
+      }
+      if (!value) {
+        return <span className="text-muted-foreground">-</span>;
+      }
       return (
         <span>
           {value || "Unknown"} {column.unit}

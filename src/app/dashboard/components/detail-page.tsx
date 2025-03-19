@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { ResourceType } from "../swapi-client";
 import { ColumnDef, useSwapiDetail } from "../use-swapi";
 import ResourceLink from "./resource-link";
+import { formatPopulation } from "@/lib/utils";
 
 export default function DetailPage({ resource, properties }: { resource: ResourceType; properties: ColumnDef[] }) {
   const { id: itemId } = useParams();
@@ -101,6 +102,9 @@ const PropertyValue = ({ property, item, router }: { property: ColumnDef; item: 
     case "badge":
       return <Badge variant="outline">{value || "Unknown"}</Badge>;
     case "measurement":
+      if ((property.unit = "people")) {
+        return <span>{formatPopulation(value)}</span>;
+      }
       return (
         <p>
           {value || "Unknown"} {property.unit}

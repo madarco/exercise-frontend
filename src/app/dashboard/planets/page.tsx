@@ -8,7 +8,7 @@ const columnsDef: ColumnDef[] = [
   { property: "name", title: "Name" },
   { property: "climate", title: "Climate" },
   { property: "terrain", title: "Terrain" },
-  { property: "population", title: "Population" },
+  { property: "population", title: "Population", type: "measurement", unit: "people" },
 ];
 
 const resource: ResourceType = "planets";

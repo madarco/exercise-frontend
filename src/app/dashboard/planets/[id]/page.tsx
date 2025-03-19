@@ -44,7 +44,8 @@ const properties: ColumnDef[] = [
   {
     property: "population",
     title: "Population",
-    type: "text",
+    unit: "people",
+    type: "measurement",
   },
 ];
 
