@@ -43,8 +43,8 @@ export const fetchData = async (resourceOrUrl: string, page?: number, isFullUrl 
   const cachedData = localCache ? (typeof window !== "undefined" ? localStorage.getItem(`swapi_${apiUrl}`) : null) : null;
   const cachedTimestamp = localCache ? (typeof window !== "undefined" ? localStorage.getItem(`swapi_${apiUrl}_timestamp`) : null) : null;
 
-  // Check if cache is valid (less than 24 hours old)
-  const isValidCache = cachedData && cachedTimestamp && Date.now() - parseInt(cachedTimestamp) < 24 * 60 * 60 * 1000;
+  // Check if cache is valid (less than 1 hour)
+  const isValidCache = cachedData && cachedTimestamp && Date.now() - parseInt(cachedTimestamp) < 60 * 60 * 1000;
 
   if (isValidCache) {
     try {
