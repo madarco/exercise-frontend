@@ -6,6 +6,8 @@ The requests are cached in both localStorage and using the new Next.js caching.
 
 Cache (both server and localStorage) can be cleared from the home with the Clear Cache button.
 
+Rate-limiting on the SWAPI api is 3 request per second by default.
+
 ## Getting Started
 
 First, run the development server:
