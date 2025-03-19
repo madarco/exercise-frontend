@@ -1,5 +1,4 @@
-
-import * as React from "react"
+import * as React from "react";
 import {
   IconCamera,
   IconChartBar,
@@ -15,45 +14,45 @@ import {
   IconSearch,
   IconSettings,
   IconUsers,
-} from "@tabler/icons-react"
+} from "@tabler/icons-react";
 
 export const sidebar = {
-    user: {
-      name: "marco",
-      email: "marco@example.com",
-      avatar: "/avatars/shadcn.jpg",
+  user: {
+    name: "marco",
+    email: "marco@example.com",
+    avatar: "/avatars/shadcn.jpg",
+  },
+  navMain: [
+    {
+      title: "Films",
+      url: "/dashboard/films",
+      icon: IconDashboard,
     },
-    navMain: [
-      {
-        title: "Films",
-        url: "#",
-        icon: IconDashboard,
-      },
-      {
-        title: "People",
-        url: "#",
-        icon: IconListDetails,
-      },
-      {
-        title: "Plantes",
-        url: "#",
-        icon: IconChartBar,
-      },
-      {
-        title: "Species",
-        url: "#",
-        icon: IconFolder,
-      },
-      {
-        title: "Staships",
-        url: "#",
-        icon: IconUsers,
-      },
+    {
+      title: "People",
+      url: "/dashboard/people",
+      icon: IconListDetails,
+    },
+    {
+      title: "Planets",
+      url: "/dashboard/planets",
+      icon: IconChartBar,
+    },
+    {
+      title: "Species",
+      url: "/dashboard/species",
+      icon: IconFolder,
+    },
+    {
+      title: "Starships",
+      url: "/dashboard/starships",
+      icon: IconUsers,
+    },
 
-      {
-        title: "Vehicles",
-        url: "#",
-        icon: IconUsers,
-      },
-    ],
-  }
+    {
+      title: "Vehicles",
+      url: "/dashboard/vehicles",
+      icon: IconUsers,
+    },
+  ],
+};

@@ -1,11 +1,14 @@
-import { AppSidebar } from "@/components/app-sidebar"
-import { SiteHeader } from "@/components/site-header"
-import {
-    SidebarInset,
-    SidebarProvider,
-} from "@/components/ui/sidebar"
+"use client";
+import { AppSidebar } from "@/components/app-sidebar";
+import { SiteHeader } from "@/components/site-header";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { usePathname } from "next/navigation";
+import { sidebar } from "@/configs/menus";
 
 export default function Layout({ children }) {
+  const pathname = usePathname();
+  const navItem = sidebar.navMain.find((item) => item.url === pathname);
+
   return (
     <SidebarProvider
       style={
@@ -17,13 +20,11 @@ export default function Layout({ children }) {
     >
       <AppSidebar variant="inset" />
       <SidebarInset>
-        <SiteHeader />
+        <SiteHeader name={navItem?.title || "Star Wars"} />
         <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
-            {children}
-          </div>
+          <div className="@container/main flex flex-1 flex-col gap-2 p-8">{children}</div>
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }
