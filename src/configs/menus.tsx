@@ -26,7 +26,7 @@ export const sidebar = {
   user: {
     name: "marco",
     email: "marco@example.com",
-    avatar: "https://gravatar.com/avatar/f3d0e1eb64485817359c54ed351b3757?s=400&d=robohash&r=x",
+    avatar: "",
   },
   navMain: [
     {
