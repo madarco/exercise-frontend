@@ -76,7 +76,7 @@ export async function GET(
       },
       [url],
       {
-        revalidate: 3600,
+        revalidate: parseInt(process.env.NEXT_PUBLIC_API_SERVER_CACHE_DURATION || "3600"),
         tags: ["swapi"],
       }
     );
