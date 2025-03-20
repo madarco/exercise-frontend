@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { fetchData, ResourceType } from "../swapi-client";
+import { useRouter } from "next/navigation";
 
 export default function ResourceLink({ resource, url }: { resource: ResourceType; url: string }) {
+  const router = useRouter();
   const uid: string = url.split("/").pop() || "";
   const [item, setItem] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -29,5 +31,9 @@ export default function ResourceLink({ resource, url }: { resource: ResourceType
     return <span className="text-muted-foreground">-</span>;
   }
 
-  return <Link href={`/dashboard/${resource}/${uid}`}>{item?.properties?.name || item?.properties?.title}</Link>;
+  return (
+    <Link className="underline" href={`/dashboard/${resource}/${uid}`} onClick={(e) => e.stopPropagation()}>
+      {item?.properties?.name || item?.properties?.title}
+    </Link>
+  );
 }

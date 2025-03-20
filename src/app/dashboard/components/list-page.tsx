@@ -15,8 +15,9 @@ import { ColumnDef } from "../use-swapi";
 import ResourceLink from "./resource-link";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { formatPopulation } from "@/lib/utils";
-
+import { useRouter } from "next/navigation";
 export default function ListPage({ resource, columnsDef }: { resource: ResourceType; columnsDef: ColumnDef[] }) {
+  const router = useRouter();
   const { data, fetchData, loading, error } = useSwapiResults();
   const [currentPage, setCurrentPage] = useQueryState("page", parseAsInteger.withDefault(1));
 
@@ -66,12 +67,12 @@ export default function ListPage({ resource, columnsDef }: { resource: ResourceT
             {data?.results?.map((person) => {
               const loadedPerson = person.properties;
               return (
-                <TableRow key={person.uid}>
+                <TableRow key={person.uid} className="cursor-pointer" onClick={() => router.push(`/dashboard/${resource}/${person.uid}`)}>
                   {columnsDef.map((column) => (
                     <TableCell key={column.property}>
                       {column.property === "name" ? (
                         // Main name of the entity, linked to the detail page
-                        <Link href={`/dashboard/${resource}/${person.uid}`} className="p-0 font-medium text-left">
+                        <Link href={`/dashboard/${resource}/${person.uid}`} className="p-0 font-medium text-left underline">
                           {person.name}
                         </Link>
                       ) : !loadedPerson ? (
