@@ -104,13 +104,13 @@ export default function ListPage({ resource, columnsDef }: { resource: ResourceT
           <strong>{totalRecords}</strong> records
         </div>
         <div className="flex items-center space-x-2">
-          <Button variant="outline" size="sm" onClick={goToPreviousPage} disabled={currentPage <= 1}>
+          <Button variant="outline" size="sm" onClick={goToPreviousPage} disabled={currentPage <= 1} aria-label="Previous page">
             <IconChevronLeft className="h-4 w-4" />
           </Button>
           <div className="flex w-[100px] items-center justify-center text-sm font-medium">
             Page {currentPage} of {totalPages}
           </div>
-          <Button variant="outline" size="sm" onClick={goToNextPage} disabled={currentPage >= totalPages}>
+          <Button variant="outline" size="sm" onClick={goToNextPage} disabled={currentPage >= totalPages} aria-label="Next page">
             <IconChevronRight className="h-4 w-4" />
           </Button>
         </div>
