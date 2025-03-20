@@ -8,6 +8,10 @@ Cache (both server and localStorage) can be cleared from the home with the Clear
 
 Rate-limiting on the SWAPI api is 3 request per second by default.
 
+It has a Lighthouse score of 100
+
+![Lighthouse Score](public/lighthouse.png)
+
 ## Getting Started
 
 First, run the development server:
