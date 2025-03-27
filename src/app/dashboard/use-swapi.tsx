@@ -1,6 +1,7 @@
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import { fetchData as swapiFetchData, PaginatedData, ResourceType, SinglePageData, NotFoundError } from "./swapi-client";
 import { notFound } from "next/navigation";
+import { type Icon } from "@tabler/icons-react";
 
 export const useSwapiResults = () => {
   const [data, setData] = useState<PaginatedData | null>(null);
@@ -85,4 +86,5 @@ export interface ColumnDef {
   type?: "text" | "badge" | "measurement" | "resources";
   unit?: string;
   render?: (value: any) => ReactNode;
+  icon?: Icon;
 }

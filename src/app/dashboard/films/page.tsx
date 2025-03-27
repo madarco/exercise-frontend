@@ -7,6 +7,7 @@ import { SinglePageData } from "../swapi-client";
 import { useSwapiDetail, useSwapiResults } from "../use-swapi";
 import { fetchData } from "../swapi-client";
 import Link from "next/link";
+import { IconMovie, IconNumbers, IconUser, IconCalendar } from "@tabler/icons-react";
 
 // Create a component for the films page
 export default function Page() {
@@ -90,17 +91,25 @@ export default function Page() {
           >
             <Card className="h-full transition-colors hover:bg-muted/50">
               <CardHeader>
-                <CardTitle>{film.properties.title}</CardTitle>
-                <CardDescription>Episode {film.properties.episode_id}</CardDescription>
+                <CardTitle className="flex items-center gap-2">
+                  <IconMovie className="h-5 w-5" />
+                  {film.properties.title}
+                </CardTitle>
+                <CardDescription className="flex items-center gap-2">
+                  <IconNumbers className="h-4 w-4" />
+                  Episode {film.properties.episode_id}
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-sm line-clamp-3">{film.properties.opening_crawl}</p>
               </CardContent>
               <CardFooter className="flex-col items-start gap-1">
-                <div className="text-sm">
+                <div className="text-sm flex items-center gap-2">
+                  <IconUser className="h-4 w-4" />
                   <span className="font-medium">Director:</span> {film.properties.director}
                 </div>
-                <div className="text-sm">
+                <div className="text-sm flex items-center gap-2">
+                  <IconCalendar className="h-4 w-4" />
                   <span className="font-medium">Release Date:</span> {film.properties.release_date}
                 </div>
               </CardFooter>

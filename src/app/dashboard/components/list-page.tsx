@@ -58,7 +58,10 @@ export default function ListPage({ resource, columnsDef }: { resource: ResourceT
             <TableRow>
               {columnsDef.map((column) => (
                 <TableHead key={column.property} className={column.className} style={{ width: Math.round(100 / columnsDef.length) + "%" }}>
-                  {column.title}
+                  <div className="flex items-center gap-2">
+                    {column.icon && <column.icon className="h-4 w-4" />}
+                    {column.title}
+                  </div>
                 </TableHead>
               ))}
             </TableRow>

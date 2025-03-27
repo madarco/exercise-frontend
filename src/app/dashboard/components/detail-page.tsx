@@ -54,7 +54,10 @@ export default function DetailPage({ resource, properties }: { resource: Resourc
               {properties.map((property, index) => (
                 <div key={index}>
                   <div>
-                    <h3 className="font-semibold mb-1">{property.title}</h3>
+                    <h3 className="font-semibold mb-1 flex items-center gap-2">
+                      {property.icon && <property.icon className="h-4 w-4" />}
+                      {property.title}
+                    </h3>
                     <PropertyValue property={property} item={item.result} router={router} />
                   </div>
                 </div>

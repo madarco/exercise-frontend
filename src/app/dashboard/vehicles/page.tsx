@@ -3,13 +3,14 @@
 import ListPage from "../components/list-page";
 import { ResourceType } from "../swapi-client";
 import { ColumnDef } from "../use-swapi";
+import { IconCar, IconCategory, IconBuildingFactory, IconUsers, IconUserFilled } from "@tabler/icons-react";
 
 const columnsDef: ColumnDef[] = [
-  { property: "name", title: "Name" },
-  { property: "model", title: "Model" },
-  { property: "manufacturer", title: "Manufacturer" },
-  { property: "crew", title: "Crew" },
-  { property: "passengers", title: "Passengers" },
+  { property: "name", title: "Name", icon: IconCar },
+  { property: "model", title: "Model", icon: IconCategory },
+  { property: "manufacturer", title: "Manufacturer", icon: IconBuildingFactory },
+  { property: "crew", title: "Crew", icon: IconUsers },
+  { property: "passengers", title: "Passengers", icon: IconUserFilled },
 ];
 
 const resource: ResourceType = "vehicles";
